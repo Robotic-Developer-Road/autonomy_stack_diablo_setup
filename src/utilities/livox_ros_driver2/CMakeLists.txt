@@ -93,7 +93,7 @@ if(ROS_EDITION STREQUAL "ROS1")
   set(CMAKE_CXX_EXTENSIONS OFF)
 
   ## make sure the livox_lidar_sdk_static library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_static.a    /usr/local/lib)
+  find_library(LIVOX_LIDAR_SDK_LIBRARY  liblivox_lidar_sdk_static.a ${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/lib/ REQUIRED)
 
   ## PCL library
   link_directories(${PCL_LIBRARY_DIRS})
@@ -155,6 +155,8 @@ if(ROS_EDITION STREQUAL "ROS1")
     src
   )
 
+  include_directories(${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/include/ REQUIRED)
+  
   #---------------------------------------------------------------------------------------
   # link libraries
   #---------------------------------------------------------------------------------------
@@ -248,9 +250,10 @@ else(ROS_EDITION STREQUAL "ROS2")
   )
 
   ## make sure the livox_lidar_sdk_shared library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so /usr/local/lib REQUIRED)
+  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so liblivox_lidar_sdk_static.a ${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/lib/ REQUIRED)
+  
+  set(LIVOX_LIDAR_SDK_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/include/)
 
-  ##
   find_path(LIVOX_LIDAR_SDK_INCLUDE_DIR
     NAMES "livox_lidar_api.h" "livox_lidar_def.h"
     REQUIRED)
@@ -285,9 +288,16 @@ else(ROS_EDITION STREQUAL "ROS2")
 
   # get include directories of custom msg headers
   if(HUMBLE_ROS STREQUAL "humble")
-    rosidl_get_typesupport_target(cpp_typesupport_target
-    ${LIVOX_INTERFACES} "rosidl_typesupport_cpp")
-    target_link_libraries(${PROJECT_NAME} "${cpp_typesupport_target}")
+    find_program(ROSIDL_GET_TYPESUPPORT_TARGET rosidl_get_typesupport_target)
+    if(ROSIDL_GET_TYPESUPPORT_TARGET)
+      rosidl_get_typesupport_target(cpp_typesupport_target
+      ${LIVOX_INTERFACES} "rosidl_typesupport_cpp")
+      target_link_libraries(${PROJECT_NAME} "${cpp_typesupport_target}")
+    else()
+      rosidl_get_typesupport_target(cpp_typesupport_target
+      ${LIVOX_INTERFACES} "rosidl_typesupport_cpp")
+      target_link_libraries(${PROJECT_NAME} "${cpp_typesupport_target}")
+    endif()
   else()
     set(LIVOX_INTERFACE_TARGET "${LIVOX_INTERFACES}__rosidl_typesupport_cpp")
     add_dependencies(${PROJECT_NAME} ${LIVOX_INTERFACES})
