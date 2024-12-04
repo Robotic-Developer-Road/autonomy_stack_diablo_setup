@@ -1,6 +1,8 @@
 ###############################################################################
 # Option for using system Eigen or GTSAM-bundled Eigen
 option(GTSAM_USE_SYSTEM_EIGEN "Find and use system-installed Eigen. If 'off', use the one bundled with GTSAM" OFF)
+# error: static assertion failed: Error: GTSAM was built against a different version of Eigen  SOLVED: https://blog.csdn.net/moyu123456789/article/details/107058418
+set(GTSAM_USE_SYSTEM_EIGEN ON)
 
 if(NOT GTSAM_USE_SYSTEM_EIGEN)
   # This option only makes sense if using the embedded copy of Eigen, it is
