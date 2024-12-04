@@ -6,6 +6,11 @@ The repository contains the full autonomy stack for a system setup based on the 
 
 ## Simulation Setup
 
+How to build the ros2 workspace with `colcon build`
+```bash
+chmod +x setup_build.sh && ./setup_build.sh
+```
+
 ### Base Autonomy
 
 The system is integrated with [Unity](https://unity.com) environment models for simulation. The repository has been tested in Ubuntu 22.04 with [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html). After installing ROS2 Humble, add 'source /opt/ros/humble/setup.bash' to the '~/.bashrc' file and `source ~/.bashrc` in the terminal to engage the installation.
