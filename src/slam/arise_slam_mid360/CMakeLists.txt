@@ -43,6 +43,14 @@ find_package(arise_slam_mid360_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
 find_package(Eigen3 REQUIRED)
+
+set(Sophus_DIR ${PROJECT_SOURCE_DIR}/../dependency/Sophus/install/share/sophus/cmake/)
+set(Sophus_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/../dependency/Sophus/install/include/)
+
+set(GTSAM_DIR ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/lib/cmake/)
+set(GTSAM_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/include/)
+set(GTSAM_LIBRARY_DIRS ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/lib/)
+
 find_package(Sophus REQUIRED)
 find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
@@ -57,7 +65,7 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
   ${CERES_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  ${GTSAM_INCLUDE_DIR}
+  ${GTSAM_INCLUDE_DIRS}
   ${TBB_INCLUDE_DIR}
   ${Sophus_INCLUDE_DIRS}
   ${pcl_conversions_INCLUDE_DIRS}
@@ -66,13 +74,13 @@ include_directories(
 
 # Link directories
 link_directories(
-  include
+  # include
   ${PCL_LIBRARY_DIRS}
   ${OpenCV_LIBRARY_DIRS}
-  ${GTSAM_LIBRARY_DIRS}
+  ${GTSAM_LIBRARY_DIRS}/libgtsam.so
 )
 
-set(GTSAM_LIBRARIES gtsam)
+# set(GTSAM_LIBRARIES gtsam)
 
 
 # AriseSlam Library
@@ -116,15 +124,14 @@ ament_target_dependencies(AriseSlamLib
 target_link_libraries(AriseSlamLib
   ${PCL_LIBRARIES}
   ${OpenCV_LIBRARIES}
-  gtsam
- ${CERES_LIBRARIES}
+  ${GTSAM_LIBRARY_DIRS}/libgtsam.so
+  ${CERES_LIBRARIES}
 )
 
 # IMU PreIntegration node
 add_executable(imu_preintegration_node src/imuPreintegration_node.cpp)
 ament_target_dependencies(imu_preintegration_node rclcpp nav_msgs sensor_msgs tf2_ros)
 target_link_libraries(imu_preintegration_node
-    gtsam
     AriseSlamLib
 )
 
@@ -136,8 +143,8 @@ ament_target_dependencies(feature_extraction_node rclcpp nav_msgs sensor_msgs ar
 target_link_libraries(feature_extraction_node 
   ${PCL_LIBRARIES}
   ${TBB_LIBRARIES}
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
+  # $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  # $<INSTALL_INTERFACE:include>
   AriseSlamLib
 )
 
@@ -181,5 +188,8 @@ install(TARGETS
 install(DIRECTORY config launch
         DESTINATION share/${PROJECT_NAME}/
 )
+
+# Install GTSAM Libraries(.so) into install/{PROJECT_NAME}/lib/ package
+file(COPY ${GTSAM_LIBRARY_DIRS}/${allCopyFiles} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 ament_package()

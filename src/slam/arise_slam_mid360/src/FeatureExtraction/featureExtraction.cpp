@@ -734,7 +734,7 @@ namespace arise_slam {
 
 #if 1  
         pcl::PointCloud<point_os::PointcloudXYZITR>::Ptr undistortedPoints;
-        undistortedPoints = std::make_shared<pcl::PointCloud<point_os::PointcloudXYZITR>>(laserCloudIn);
+        undistortedPoints = boost::make_shared<pcl::PointCloud<point_os::PointcloudXYZITR>>(laserCloudIn);
         //wrap feature message in one message
         publishTopic(lidar_start_time, undistortedPoints, edgePoints, plannerPoints, bobPoints, q_w_original_l);
 
