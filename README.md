@@ -11,6 +11,11 @@ How to build the ros2 workspace with `colcon build`
 chmod +x setup_build.sh && ./setup_build.sh
 ```
 
+- the command needed by tare_planner as follows
+```bash
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/autonomy_stack_diablo_setup/src/exploration_planner/tare_planner/or-tools/lib/
+```
+
 ### Base Autonomy
 
 The system is integrated with [Unity](https://unity.com) environment models for simulation. The repository has been tested in Ubuntu 22.04 with [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html). After installing ROS2 Humble, add 'source /opt/ros/humble/setup.bash' to the '~/.bashrc' file and `source ~/.bashrc` in the terminal to engage the installation.
