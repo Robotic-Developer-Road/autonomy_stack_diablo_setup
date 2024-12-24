@@ -250,8 +250,7 @@ else(ROS_EDITION STREQUAL "ROS2")
   )
 
   ## make sure the livox_lidar_sdk_shared library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so liblivox_lidar_sdk_static.a ${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/lib/ REQUIRED)
-  
+  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so liblivox_lidar_sdk_static.a PATHS ${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/lib/ REQUIRED)
   set(LIVOX_LIDAR_SDK_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../Livox-SDK2/install/include/)
 
   find_path(LIVOX_LIDAR_SDK_INCLUDE_DIR
