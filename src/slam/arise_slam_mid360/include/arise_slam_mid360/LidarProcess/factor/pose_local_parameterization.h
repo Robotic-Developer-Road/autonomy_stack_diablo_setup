@@ -9,7 +9,7 @@
 #include <eigen3/Eigen/Dense>
 #include <ceres/ceres.h>
 #include "../../utils/utility.h"
-class PoseLocalParameterization : public ceres::LocalParameterization
+class PoseLocalParameterization : public ceres::Manifold
 {
     virtual bool Plus(const double *x, const double *delta, double *x_plus_delta) const;
     virtual bool ComputeJacobian(const double *x, double *jacobian) const;

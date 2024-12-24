@@ -201,12 +201,12 @@ namespace arise_slam {
                     ceres::Problem problem(problem_options);
 
                     problem.AddParameterBlock(pose_parameters, 7,
-                                              new PoseLocalParameterization());
+                                              new ceres::QuaternionManifold());
                     // ceres::LossFunction *loss_function = new ceres::HuberLoss(0.1);
 
 #if 0
                     ceres::LossFunction *loss_function = new ceres::HuberLoss(0.1);
-                    ceres::LocalParameterization *q_parameterization =
+                    ceres::Manifold *q_parameterization =
                             new ceres::EigenQuaternionParameterization();
                     problem.AddParameterBlock(pose_parameters, 3);
                     problem.AddParameterBlock(pose_parameters + 3, 4,q_parameterization);
@@ -448,8 +448,8 @@ namespace arise_slam {
                 matchingMode == MatchingMode::LOCALIZATION;
         const Eigen::Vector3d pos = p.getVector3fMap().cast<double>();
 
-        // !!! 需要注意的是在定位阶段, 才会进行去畸变,
-        // 如果畸变模式选择是OPTIMIZATION时 则同时优化起始点和终止点的位置
+        // !!! 需要注意的是在定位阶段，才会进行去畸变，
+        // 如果畸变模式选择是 OPTIMIZATION 时 则同时优化起始点和终止点的位置
         if (this->Undistortion == UndistortionMode::OPTIMIZED and
             is_local_lization_step) {
             // pInit = pos;
@@ -457,7 +457,7 @@ namespace arise_slam {
 
         } else if (this->Undistortion == UndistortionMode::APPROXIMATED and
                    is_local_lization_step) {
-            // 先把点投影到末端点, 然后构造一个虚拟的起始点,
+            // 先把点投影到末端点，然后构造一个虚拟的起始点，
             // 这样优化的激光的位姿就是整个相机的位姿
             //   pFinal = this->WithinFrameMotion(p.time) * pos;
             //   pInit = this->T_w_lidar.inverse() * pFinal;

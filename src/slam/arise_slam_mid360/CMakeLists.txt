@@ -7,8 +7,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O4 -Wall -g")
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 SET(TBB_INCLUDE_DIR "/usr/include/tbb")
 
-
-
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
@@ -47,9 +45,13 @@ find_package(Eigen3 REQUIRED)
 set(Sophus_DIR ${PROJECT_SOURCE_DIR}/../dependency/Sophus/install/share/sophus/cmake/)
 set(Sophus_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/../dependency/Sophus/install/include/)
 
-set(GTSAM_DIR ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/lib/cmake/)
+set(GTSAM_DIR ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/lib/cmake/GTSAM/)
 set(GTSAM_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/include/)
 set(GTSAM_LIBRARY_DIRS ${PROJECT_SOURCE_DIR}/../dependency/gtsam/install/lib/)
+
+set(Ceres_DIR /home/ruoxi/3rdparty/ceres-solver-2.2.0/install/lib/cmake/Ceres/)
+set(CERES_INCLUDE_DIRS /home/ruoxi/3rdparty/ceres-solver-2.2.0/install/include/)
+set(CERES_LIBRARIES /home/ruoxi/3rdparty/ceres-solver-2.2.0/install/lib/)
 
 find_package(Sophus REQUIRED)
 find_package(PCL REQUIRED)
