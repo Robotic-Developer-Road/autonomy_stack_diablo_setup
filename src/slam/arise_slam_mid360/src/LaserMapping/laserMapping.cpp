@@ -1221,7 +1221,7 @@ namespace arise_slam {
                 // RCLCPP_DEBUG(this->get_logger(), "extra surface features  size: %zu", laserCloudRealsense->size());
                 // RCLCPP_DEBUG(this->get_logger(), "after surface features  size: %zu", laserCloudSurfStack->size());
 
-                 tf2::Quaternion imu_roll_pitch;
+                tf2::Quaternion imu_roll_pitch;
                 if (use_imu_roll_pitch_this_step)
                 {
                     double imu_roll, imu_pitch, imu_yaw;
@@ -1240,14 +1240,13 @@ namespace arise_slam {
                                     laserCloudCornerStack, laserCloudSurfStack,timeLaserOdometry);
 
                 }else {
-                          
+                    // RCLCPP_INFO(this->get_logger(), "333333333");                          
                     slam.OptSet.use_imu_roll_pitch=use_imu_roll_pitch_this_step;
                     slam.OptSet.imu_roll_pitch=imu_roll_pitch;
                     slam.Localization(initialization, LidarSLAM::PredictionSource::IMU_ODOM, T_w_lidar,
                                 laserCloudCornerStack, laserCloudSurfStack,timeLaserOdometry);
-                           
+                    // RCLCPP_INFO(this->get_logger(), "444444444");
                 }
-
 
                 q_w_curr = slam.T_w_lidar.rot;
                 t_w_curr = slam.T_w_lidar.pos;

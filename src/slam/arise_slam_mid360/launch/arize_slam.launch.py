@@ -18,6 +18,10 @@ def generate_launch_description():
         package_name="arise_slam_mid360",
         file_name="config/livox/livox_mid360_calibration.yaml"
     )
+    rviz_config_file = get_share_file(
+        package_name="arise_slam_mid360",
+        file_name="rviz/ros2.rviz"
+    )
     home_directory = os.path.expanduser("~")
     
     config_path_arg = DeclareLaunchArgument(
@@ -90,7 +94,14 @@ def generate_launch_description():
         }],
     )
 
-    
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', rviz_config_file],
+        output='screen'
+    )
+
     return LaunchDescription([
         launch_ros.actions.SetParameter(name='use_sim_time', value='false'),
         config_path_arg,
@@ -103,4 +114,5 @@ def generate_launch_description():
         feature_extraction_node,
         laser_mapping_node,
         imu_preintegration_node,
+        rviz_node,
     ])

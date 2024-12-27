@@ -199,19 +199,20 @@ namespace arise_slam {
                     ceres::Problem::Options problem_options;
 
                     ceres::Problem problem(problem_options);
-
-                    problem.AddParameterBlock(pose_parameters, 7,
-                                              new ceres::QuaternionManifold());
+// std::cout<<"11111111111111"<<std::endl;
+                    // problem.AddParameterBlock(pose_parameters, 7,
+                    //                           new ceres::QuaternionManifold());
                     // ceres::LossFunction *loss_function = new ceres::HuberLoss(0.1);
+// std::cout<<"22222222222222"<<std::endl;
 
 #if 0
                     ceres::LossFunction *loss_function = new ceres::HuberLoss(0.1);
                     ceres::Manifold *q_parameterization =
                             new ceres::EigenQuaternionParameterization();
                     problem.AddParameterBlock(pose_parameters, 3);
-                    problem.AddParameterBlock(pose_parameters + 3, 4,q_parameterization);
+                    problem.AddParameterBlock(pose_parameters + 3, 4, q_parameterization);
 #endif
-                 
+// std::cout<<"333333333333333"<<std::endl;
                     int surf_num = 0; int edge_num=0;
                         for (unsigned int k = 0; k < OptimizationData.size(); ++k) {
                         if (OptimizationData.at(k).feature_type == FeatureType::EdgeFeature) {
